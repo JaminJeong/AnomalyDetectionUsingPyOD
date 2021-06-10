@@ -14,6 +14,24 @@ pip install pyod
 ## Result
 ```bash 
 $ tree
+.
+├── README.md
+├── anomaly_detection_all_model.py
+├── data
+│   └── daily-min-temperatures.csv
+├── graph
+│   ├── Angle-based Outlier Detector (ABOD).png
+│   ├── Average KNN.png
+│   ├── Cluster-based Local Outlier Factor (CBLOF).png
+│   ├── Feature Bagging.png
+│   ├── Histogram-base Outlier Detection (HBOS).png
+│   ├── Isolation Forest.png
+│   ├── K Nearest Neighbors (KNN).png
+│   ├── Local Outlier Factor (LOF).png
+│   ├── Median KNN.png
+│   ├── test.png
+│   └── train.png
+└── save_graph.py
 ```
 
 ## Reference 
