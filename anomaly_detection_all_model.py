@@ -42,17 +42,14 @@ import argparse
 def load_csvfiles(fpath):
     try:
         if not Path(fpath).exists():
-            print(f"file path ")
+            print(f"file path is not available : {fpath}")
         df = pd.read_csv(fpath, delimiter=',')
     except Exception as e:
         print('fail to load file {} caused by {}'.format(fpath, e))
-    else:
-        print('load file {}'.format(fpath))
     finally:
         pass
 
     return df
-
 
 parser = argparse.ArgumentParser(prog="AnomalyDetectionForMIT-BIHUsingPyod",
                                     description="AnomalyDetectionForMIT-BIHUsingPyod", add_help=True)
@@ -75,14 +72,14 @@ detector_list = [LOF(n_neighbors=5), LOF(n_neighbors=10), LOF(n_neighbors=15),
                  LOF(n_neighbors=35), LOF(n_neighbors=40), LOF(n_neighbors=45),
                  LOF(n_neighbors=50)]
 
-X = get_pandas_data_from_csv_path(args.DATA_PATH)
-pprint.pprint(f"X.head() : {X.head()}")
-X_train_MLII, X_test_MLII = train_test_split(np.array(X["'MLII'"]), test_size=0.3, shuffle=False)
-GenGraph('train').draw(Path('./graph'), X_train_MLII[::30])
-GenGraph('test').draw(Path('./graph'), X_test_MLII[::30])
+df_data = load_csvfiles("./data/daily-min-temperatures.csv")
+pprint.pprint(f"df_data.head() : {df_data.head()}")
+df_data_train, df_data_test = train_test_split(np.array(df_data["Temp"]), test_size=0.2, shuffle=False)
+GenGraph('train').draw(Path('./graph'), df_data_train[::30])
+GenGraph('test').draw(Path('./graph'), df_data_test[::30])
 
-#X_train_MLII = np.array(list(map(lambda x : float(x), X_train_MLII)))
-sys.exit(0)
+#df_data_train = np.array(list(map(lambda x : float(x), df_data_train)))
+# sys.exit(0)
 
 random_state = 42
 # Define nine outlier detection tools to be compared
@@ -137,10 +134,10 @@ graph_path = Path('./graph')
 graph_path.mkdir(exist_ok=True, parents=True)
 
 # fit the data and tag outliers
-X_train_MLII = np.array(make_data_sampling(X_train_MLII, window_size))
-pprint.pprint(f"X_train_MLII.shape : {X_train_MLII.shape}")
-X_test_MLII = np.array(make_data_sampling(X_test_MLII, window_size))
-pprint.pprint(f"X_test_MLII.shape : {X_test_MLII.shape}")
+df_data_train = np.array(make_data_sampling(df_data_train, window_size))
+pprint.pprint(f"df_data_train.shape : {df_data_train.shape}")
+df_data_test = np.array(make_data_sampling(df_data_test, window_size))
+pprint.pprint(f"df_data_test.shape : {df_data_test.shape}")
 
 # Fit the models with the generated data and
 # compare model performances
@@ -149,11 +146,11 @@ for i, (clf_name, clf) in enumerate(classifiers.items()):
     print()
     print(i + 1, 'fitting : ', title_name)
     try:
-        clf.fit(X_train_MLII)
-        y_pred = clf.predict(X_test_MLII)
+        clf.fit(df_data_train)
+        y_pred = clf.predict(df_data_test)
         data = {}
-        #pprint.pprint(f"X_test_MLII : {X_test_MLII}")
-        data['real_value'] = X_test_MLII[:, -1]
+        #pprint.pprint(f"df_data_test : {df_data_test}")
+        data['real_value'] = df_data_test[:, -1]
         data['anomaly_label'] = y_pred
         BasicGenGraph(title_name).draw(graph_path, data)
     except Exception as err:
