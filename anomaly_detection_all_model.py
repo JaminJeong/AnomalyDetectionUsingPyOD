@@ -51,6 +51,16 @@ def load_csvfiles(fpath):
 
     return df
 
+def make_data_sampling(data, window_size):
+    n_samples = len(data)
+    if n_samples < window_size:
+        print("window size is too long!!")
+        return None
+
+    return [data[i:i + window_size] \
+        for i in range(n_samples - window_size + 1)]
+
+
 parser = argparse.ArgumentParser(prog="AnomalyDetectionForMIT-BIHUsingPyod",
                                     description="AnomalyDetectionForMIT-BIHUsingPyod", add_help=True)
 parser.add_argument('-w', '--WINDOW_SIZE', help='data window size.')
@@ -75,6 +85,10 @@ detector_list = [LOF(n_neighbors=5), LOF(n_neighbors=10), LOF(n_neighbors=15),
 df_data = load_csvfiles("./data/daily-min-temperatures.csv")
 pprint.pprint(f"df_data.head() : {df_data.head()}")
 df_data_train, df_data_test = train_test_split(np.array(df_data["Temp"]), test_size=0.2, shuffle=False)
+
+graph_path = Path('./graph')
+graph_path.mkdir(exist_ok=True, parents=True)
+
 GenGraph('train').draw(Path('./graph'), df_data_train[::30])
 GenGraph('test').draw(Path('./graph'), df_data_test[::30])
 
@@ -129,9 +143,6 @@ classifiers = {
 # Show all detectors
 for i, clf in enumerate(classifiers.keys()):
     print('Model', i + 1, clf)
-
-graph_path = Path('./graph')
-graph_path.mkdir(exist_ok=True, parents=True)
 
 # fit the data and tag outliers
 df_data_train = np.array(make_data_sampling(df_data_train, window_size))
