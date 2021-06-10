@@ -1,17 +1,17 @@
 # AnomalyDetectionUsingPyOD
 
-## install 
+## Install 
 ```bash
 pip install pyod
 ```
 * https://github.com/yzhao062/pyod#installation
 
-## how to run 
+## How To Run 
 ```bash
 (pyod) $ python anomaly_detection_all_model.py -w 30 -c 0.25
 ```
 
-## Result
+## File Tree
 ```bash 
 $ tree
 .
@@ -33,6 +33,8 @@ $ tree
 │   └── train.png
 └── save_graph.py
 ```
+
+## Result
 
 ## Reference 
 * data : https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv
