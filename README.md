@@ -39,3 +39,4 @@ $ tree
 ## Reference 
 * data : https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv
 * pyod : https://github.com/yzhao062/pyod
+* https://machinelearningmastery.com/time-series-datasets-for-machine-learning/
