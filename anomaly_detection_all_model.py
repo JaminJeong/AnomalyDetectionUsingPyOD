@@ -117,8 +117,8 @@ classifiers = {
                        contamination=outliers_fraction),
     'Local Outlier Factor (LOF)':
         LOF(n_neighbors=35, contamination=outliers_fraction),
-     'Local Correlation Integral (LOCI)':
-         LOCI(contamination=outliers_fraction),
+        # 'Local Correlation Integral (LOCI)':
+        # 'Lo LOCI(contamination=outliers_fraction),
     'Minimum Covariance Determinant (MCD)': MCD(
         contamination=outliers_fraction, random_state=random_state),
     'One-class SVM (OCSVM)': OCSVM(contamination=outliers_fraction),
